@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMR - OSDEMS CNC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  /* ===== VARIABLES & RESET ===== */
+  :root {
+    --primary: #009b9b;
+    --primary-dark: #007878;
+    --dark: #1a1a2e;
+    --gray: #4a4a5a;
+    --light-gray: #e8e8ed;
+    --white: #ffffff;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: 0.3s ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-main); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; transition: var(--transition); }
+  ul { list-style: none; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== TOP BAR, HEADER, FOOTER (shared) ===== */
+  .top-bar { background: var(--primary); color: var(--white); font-size: 0.85rem; padding: 8px 0; }
+  .top-bar-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .top-bar-left { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .top-bar-left span { display: flex; align-items: center; gap: 6px; }
+  .top-bar-left a { color: var(--white); }
+  .top-bar-left a:hover { color: var(--primary); }
+  .top-bar-right { display: flex; gap: 15px; }
+  .top-bar-right a { color: var(--white); font-size: 1rem; }
+  .top-bar-right a:hover { color: var(--primary); transform: translateY(-2px); }
+
+  .main-header { background: var(--white); border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+  .navbar { display: flex; justify-content: center; align-items: center; padding: 20px; gap: 60px; }
+  .logo { display: flex; align-items: center; }
+  .logo img { display: block; height: 82px; width: auto; }
+  .nav-menu { display: flex; align-items: center; gap: 10px; }
+  .nav-menu > li { position: relative; }
+  .nav-menu > li > a { display: block; padding: 12px 18px; font-weight: 600; font-size: 0.9rem; color: #000; text-transform: uppercase; letter-spacing: 0.5px; }
+  .nav-menu > li > a:hover, .nav-menu > li > a.active { color: var(--white); background-color: var(--primary); }
+  .has-dropdown:hover .dropdown { opacity: 1; visibility: visible; }
+  .dropdown { position: absolute; top: 100%; left: 0; background: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.12); min-width: 180px; opacity: 0; visibility: hidden; transition: var(--transition); }
+  .dropdown li a { display: block; padding: 12px 20px; font-size: 0.9rem; color: var(--dark); border-bottom: 1px solid var(--light-gray); }
+  .dropdown li:last-child a { border-bottom: none; }
+  .dropdown li a:hover { background: var(--light-gray); color: var(--primary); }
+  .dropdown i.fa-chevron-down { font-size: 0.7rem; margin-left: 4px; }
+  .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+  .main-footer { position: relative; padding: 50px 0 30px; color: var(--white); background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+  .footer-col h4 { font-size: 1rem; margin-bottom: 20px; color: var(--white); text-transform: uppercase; letter-spacing: 1px; }
+  .footer-col ul li { margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; }
+  .footer-col a { color: rgba(255,255,255,0.85); }
+  .footer-col a:hover { color: var(--primary); }
+  .footer-col i { color: var(--primary); width: 20px; margin-top: 3px; }
+  .footer-social { display: flex; gap: 15px; margin-bottom: 15px; }
+  .footer-social a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .footer-social a:hover { background: var(--primary); }
+  .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer-tagline { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+  .footer-bottom p:last-child { font-size: 0.9rem; opacity: 0.85; max-width: 600px; margin: 0 auto; }
+
+  @media (max-width: 992px) { .top-bar-left span:nth-child(n+4) { display: none; } }
+  @media (max-width: 768px) {
+    .top-bar-content { justify-content: center; }
+    .top-bar-left { display: none; }
+    .mobile-menu-btn { display: block; }
+    .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--white); flex-direction: column; align-items: stretch; padding: 80px 0 30px; box-shadow: -5px 0 20px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 999; }
+    .nav-menu.active { right: 0; }
+    .dropdown { position: static; opacity: 1; visibility: visible; max-height: 0; overflow: hidden; box-shadow: none; background: var(--light-gray); }
+    .has-dropdown.active .dropdown { max-height: 200px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 35px; }
+  }
+
+  /* ===== AMR VIDEO 1 (solo, sin texto) ===== */
+  .amr-video-full {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+  }
+  .amr-video-full video {
+    display: block;
+    width: 100%;
+    min-height: 50vh;
+    object-fit: cover;
+  }
+
+  /* ===== AMR TEXTO (debajo del video) ===== */
+  .amr-intro-section {
+    padding: 60px 0;
+    background: #ffffff;
+  }
+  .amr-intro-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 20px;
+  }
+  .amr-intro-content h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--dark);
+  }
+  .amr-intro-content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #555b5b;
+  }
+  .amr-intro-content p + p {
+    margin-top: 20px;
+  }
+
+  /* ===== AMR VIDEO 2 (en sección Security, dentro del container, más largo/alto) ===== */
+  .amr-section-video {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    overflow: hidden;
+    min-height: 450px;
+  }
+  .amr-section-video video {
+    width: 100%;
+    display: block;
+    height: auto;
+    min-height: 450px;
+    object-fit: cover;
+  }
+
+  /* ===== AMR SECTIONS ===== */
+  .amr-section {
+    padding: 70px 0 60px;
+    background: #ffffff;
+  }
+  .amr-section:nth-of-type(even) {
+    background: #f4f4f6;
+  }
+  .amr-section-title {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #283036;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .amr-intro {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #555b5b;
+    max-width: 900px;
+    margin: 0 auto 50px;
+    text-align: center;
+  }
+
+  /* AMR portfolio cards (imagen arriba, título, texto) */
+  .amr-portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  .amr-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .amr-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+  .amr-card-content {
+    padding: 1.5rem;
+  }
+  .amr-card h3 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #283036;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .amr-card p {
+    font-size: 0.95rem;
+    color: #555b5b;
+    line-height: 1.7;
+  }
+
+  /* Advantages grid */
+  .amr-advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .amr-advantage-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--primary);
+    font-size: 1.5rem;
+  }
+  .amr-advantage h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #283036;
+    margin-bottom: 16px;
+  }
+  .amr-advantage ul li {
+    font-size: 0.9rem;
+    color: #555b5b;
+    margin-bottom: 8px;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .amr-advantage ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  /* Imágenes a ancho completo */
+  .amr-image-full {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+  }
+  .amr-image-full img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* CTA */
+  .amr-cta {
+    text-align: center;
+    padding: 50px 0;
+  }
+  .amr-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .amr-cta-buttons a {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--primary);
+    color: var(--white);
+    font-weight: 600;
+    border-radius: 6px;
+  }
+  .amr-cta-buttons a:hover {
+    background: var(--primary-dark);
+  }
+
+  /* Última sección: imagen izquierda + contact derecha */
+  .amr-last-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  .amr-last-section .amr-last-img {
+    height: 280px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .amr-last-section .amr-last-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .amr-last-section .amr-last-contact h3 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #283036;
+    margin-bottom: 20px;
+  }
+  .amr-last-section .amr-last-contact .amr-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  .amr-last-section .amr-last-contact .amr-contact-item i {
+    color: var(--primary);
+    width: 20px;
+  }
+  .amr-last-section .amr-last-contact .amr-contact-item a {
+    color: #283036;
+  }
+  .amr-last-section .amr-last-contact .amr-contact-item a:hover {
+    color: var(--primary);
+  }
+  @media (max-width: 768px) {
+    .amr-last-section {
+      grid-template-columns: 1fr;
+    }
+    .amr-last-section .amr-last-img {
+      height: 220px;
+    }
+  }
+
+  /* 360 Support cards (sin imágenes, 2 por fila) */
+  .amr-support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .amr-support-card {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  }
+  .amr-support-card-content {
+    padding: 1.5rem;
+  }
+  .amr-support-card h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #283036;
+    margin-bottom: 10px;
+  }
+  .amr-support-card p {
+    font-size: 0.9rem;
+    color: #555b5b;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 992px) {
+    .amr-portfolio-grid { grid-template-columns: 1fr; }
+    .amr-advantages-grid { grid-template-columns: 1fr 1fr; }
+    .amr-support-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .amr-intro-content h1 { font-size: 2rem; }
+    .amr-advantages-grid { grid-template-columns: 1fr; }
+    .amr-support-grid { grid-template-columns: 1fr; }
+  }
+  </style>
+  <script defer src="amr.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Video 1: solo, sin texto arriba -->
+    <section class="amr-video-full">
+      <video autoplay muted loop playsinline>
+        <source src="https://osdemscnc.com/wp-content/uploads/2025/02/AMR.mp4" type="video/mp4">
+      </video>
+    </section>
+
+    <!-- Texto debajo del video -->
+    <section class="amr-intro-section">
+      <div class="amr-intro-content">
+        <h1>The future of robotics is mobile and autonomous</h1>
+        <p>Thanks to <strong>advanced sensor technology</strong>, <strong>no-code programming</strong> as well as <strong>state-of-the-art battery technology</strong> and <strong>higher energy density</strong>, autonomous mobile robotics is able to navigate autonomously, detect obstacles safely, evade these and create alternative routes. To ensure the continuous stable operation of our mobile robots, all KUKA vehicles are equipped with state-of-the-art Li-ion batteries, which are available around the clock in inductive charging mode. <strong>The result: 24/7 operation and 99% availability.</strong></p>
+        <p>This unrestricted mobility opens up entirely new areas of application for robotics. It is used in a wide range of industries, including warehousing, manufacturing, healthcare and retail.</p>
+      </div>
+    </section>
+
+    <!-- Security section con video 2 (container, más largo) -->
+    <section class="amr-section">
+      <div class="container">
+        <h2 class="amr-section-title">Security and no-code programming for barrier-free flow</h2>
+        <div class="amr-section-video">
+          <video class="elementor-video" src="https://osdemscnc.com/wp-content/uploads/2025/02/Feel-the-flow-of-automation-Autonomous-mobile-robotics-by-KUKA-KUKA-Robots-Automation-1080p-h264.mp4" autoplay loop controls playsinline controlslist="nodownload"></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- KUKA AMR portfolio -->
+    <section class="amr-section">
+      <div class="container">
+        <h2 class="amr-section-title">KUKA gets your production moving: AMR portfolio</h2>
+        <div class="amr-portfolio-grid">
+          <div class="amr-card">
+            <img src="https://osdemscnc.com/wp-content/uploads/2025/02/1.avif" alt="KUKA mobile platforms">
+            <div class="amr-card-content">
+              <h3>KUKA mobile platforms</h3>
+              <p>Our mobile transport platforms for all payloads are collision-free, operate in a swarm and offer absolute flexibility. And this both as a product carrier and a mobile production station.</p>
+            </div>
+          </div>
+          <div class="amr-card">
+            <img src="https://osdemscnc.com/wp-content/uploads/2025/02/2.avif" alt="KUKA mobile robots">
+            <div class="amr-card-content">
+              <h3>KUKA mobile robots</h3>
+              <p>Mobile manipulators are designed for safe transport of materials, machine tending, inspection, order picking and pick & place tasks. AMRs are capable of human-robot collaboration.</p>
+            </div>
+          </div>
+          <div class="amr-card">
+            <img src="https://osdemscnc.com/wp-content/uploads/2025/02/3.avif" alt="Fleet management software">
+            <div class="amr-card-content">
+              <h3>Fleet management software</h3>
+              <p>The navigation system enables intelligent control, real-time monitoring and optimization of the traffic flow of a heterogeneous group of vehicles (AGVs/AMR) in any configuration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intelligent systems -->
+    <section class="amr-section">
+      <div class="container">
+        <h2 class="amr-section-title">Intelligent systems from a single source</h2>
+        <p class="amr-intro">Our autonomous robots are developed and manufactured with the latest technologies and innovative functions to meet the <strong>highest standards in performance, reliability and safety</strong>. Our automation portfolio includes series products for industry that meet different specific requirements. These high quality standards are also applied exactly to the AMRs. Thanks to our extensive experience and specialized know-how, we are also able to develop targeted concepts for your tasks in this field.</p>
+
+        <h3 style="font-size: 1.3rem; text-align: center; margin-bottom: 30px; color: #283036;">Your advantages when using autonomous mobile robotics from KUKA:</h3>
+        <div class="amr-advantages-grid">
+          <div class="amr-advantage">
+            <div class="amr-advantage-icon"><i class="fas fa-cogs"></i></div>
+            <h4>A versatile portfolio</h4>
+            <ul>
+              <li>Autonomous mobile platforms</li>
+              <li>Mobile manipulators</li>
+              <li>HRC-compliant solutions</li>
+              <li>All payloads</li>
+              <li>For cleanroom applications</li>
+              <li>Drive technologies: omnidirectional, differential</li>
+              <li>Standardized and customer-specific solutions</li>
+            </ul>
+          </div>
+          <div class="amr-advantage">
+            <div class="amr-advantage-icon"><i class="fas fa-industry"></i></div>
+            <h4>Autonomous factory</h4>
+            <ul>
+              <li>Hybrid and free navigation: via SLAM method and via QR codes</li>
+              <li>No-code solution with artificial intelligence</li>
+              <li>Fleet management for the complete transport system</li>
+              <li>Simple integration into existing production: VDA/VDMA-5050 compatible</li>
+            </ul>
+          </div>
+          <div class="amr-advantage">
+            <div class="amr-advantage-icon"><i class="fas fa-globe"></i></div>
+            <h4>Global all-round service</h4>
+            <ul>
+              <li>Customer support 24/7, 365 days a year</li>
+              <li>Broad portfolio of e-services</li>
+              <li>Global partner network</li>
+              <li>Feasibility studies, test setups</li>
+              <li>Virtual simulation</li>
+              <li>Programming services</li>
+              <li>Training of employees on site or digitally</li>
+            </ul>
+          </div>
+          <div class="amr-advantage">
+            <div class="amr-advantage-icon"><i class="fas fa-shield-halved"></i></div>
+            <h4>High safety</h4>
+            <ul>
+              <li>AMR meets the requirements of various national and international safety standards for IoT devices</li>
+              <li>TÜV-tested HRC system (robotics, grippers)</li>
+              <li>ISO-3 cleanroom certification</li>
+              <li>ESD protection acc. to ISO 61340-5-1 and ANSI ESD S20.20</li>
+              <li>IP 54: Protection against water spray and dust</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="amr-section">
+      <div class="container amr-cta">
+        <div class="amr-cta-buttons">
+          <a href="https://wa.me/523311744584" target="_blank" rel="noopener">Contact Osdems CNC</a>
+          <a href="mailto:fernando.torres@osdemscnc.mx">We are your best option...!</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Imagen full-width: KUKA robot en producción -->
+    <section class="amr-image-full">
+      <img src="https://osdemscnc.com/wp-content/uploads/2025/02/KUKA-autonomous-mobile-robot-in-the-production-hall.jpg" alt="KUKA autonomous mobile robot in the production hall">
+    </section>
+
+    <!-- 360° support -->
+    <section class="amr-section">
+      <div class="container">
+        <h2 class="amr-section-title">360° support: from the initial idea to upgrades</h2>
+        <div class="amr-support-grid">
+          <div class="amr-support-card">
+            <div class="amr-support-card-content">
+              <h3>Feasibility studies</h3>
+              <p>Evaluation of the practical feasibility of a project through a thorough analysis of the following factors: technical feasibility, resource requirements, legal aspects and economic profitability.</p>
+            </div>
+          </div>
+          <div class="amr-support-card">
+            <div class="amr-support-card-content">
+              <h3>Network of certified system partners</h3>
+              <p>Our global network of certified system partners is spread out around the world and offers in-depth expertise in the field of autonomous mobile robotics. Together, we offer reliable support for every automation task.</p>
+            </div>
+          </div>
+          <div class="amr-support-card">
+            <div class="amr-support-card-content">
+              <h3>Test setups</h3>
+              <p>Design, development and execution of test setups in order to identify potential weaknesses or potential for improvement.</p>
+            </div>
+          </div>
+          <div class="amr-support-card">
+            <div class="amr-support-card-content">
+              <h3>Tailor-made service concepts</h3>
+              <p>Our service: from the planning and selection of suitable mobile robotic solutions through to the simulation and smooth start-up along with efficient operation in warehouses or in production and onto the overhauling and modernization of the entire fleet system.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Última sección: imagen izquierda + contact derecha -->
+    <section class="amr-section">
+      <div class="amr-last-section">
+        <div class="amr-last-img">
+          <img src="https://osdemscnc.com/wp-content/uploads/2025/02/AMR-Webinar.jpg" alt="AMR Webinar">
+        </div>
+        <div class="amr-last-contact">
+          <h3>Contact</h3>
+          <div class="amr-contact-item"><i class="fas fa-phone"></i> <a href="tel:+523318224312">+52 33 1822 4312</a></div>
+          <div class="amr-contact-item"><i class="fas fa-phone"></i> <a href="tel:+523311744584">+52 33 1174 4584</a></div>
+          <div class="amr-contact-item"><i class="fas fa-phone"></i> <a href="tel:+523326225912">+52 33 2622 5912</a></div>
+          <div class="amr-contact-item"><i class="fas fa-envelope"></i> <a href="mailto:contact@osdemscnc.com">contact@osdemscnc.com</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HISTORY - OSDEMS CNC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  /* ===== VARIABLES & RESET ===== */
+  :root {
+    --primary: #009b9b;
+    --primary-dark: #007878;
+    --dark: #1a1a2e;
+    --gray: #4a4a5a;
+    --light-gray: #e8e8ed;
+    --white: #ffffff;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: 0.3s ease;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-main);
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.85rem;
+    padding: 8px 0;
+  }
+
+  .top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-bar-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .top-bar-left span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .top-bar-left a {
+    color: var(--white);
+  }
+
+  .top-bar-left a:hover {
+    color: var(--primary);
+  }
+
+  .top-bar-right {
+    display: flex;
+    gap: 15px;
+  }
+
+  .top-bar-right a {
+    color: var(--white);
+    font-size: 1rem;
+  }
+
+  .top-bar-right a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  /* ===== HEADER / NAV ===== */
+  .main-header {
+    background: var(--white);
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 60px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo img {
+    display: block;
+    height: 82px;
+    width: auto;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-menu > li {
+    position: relative;
+  }
+
+  .nav-menu > li > a {
+    display: block;
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-menu > li > a:hover,
+  .nav-menu > li > a.active {
+    color: var(--white);
+    background-color: var(--primary);
+  }
+
+  .has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+  }
+
+  .dropdown li a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    color: var(--dark);
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .dropdown li:last-child a {
+    border-bottom: none;
+  }
+
+  .dropdown li a:hover {
+    background: var(--light-gray);
+    color: var(--primary);
+  }
+
+  .dropdown i.fa-chevron-down {
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark);
+  }
+
+  /* ===== HISTORY LAYOUT ===== */
+  .history-hero {
+    padding: 80px 0 40px;
+    background-color: #ffffff;
+  }
+
+  .history-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .history-text-block h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #283036;
+    margin-bottom: 25px;
+  }
+
+  .history-text-block p {
+    font-size: 1rem;
+    color: #555b5b;
+    margin-bottom: 14px;
+  }
+
+  .history-text-block p.history-extra {
+    display: none;
+  }
+
+  .history-text-block.show-extra p.history-extra {
+    display: block;
+  }
+
+  .history-more-info {
+    display: inline-block;
+    margin: 18px 0 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #283036;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .history-more-info::after {
+    content: '\2192';
+    margin-left: 8px;
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+  }
+
+  .history-text-block.show-extra .history-more-info::after {
+    transform: rotate(90deg);
+  }
+
+  .history-social-inline {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .history-social-inline a {
+    color: var(--primary);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .history-social-inline a i {
+    font-size: 0.9rem;
+  }
+
+  .history-image-wrapper {
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .history-image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ===== HISTORY SECTIONS (OSDEMS + PRODUCTS / CUSTOMER / SERVICE) ===== */
+  .history-sections {
+    padding: 40px 0 70px;
+    background-color: #ffffff;
+  }
+
+  .history-sections-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: flex-start;
+  }
+
+  .history-brand-block {
+    text-align: center;
+  }
+
+  .history-brand-logo {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 20px;
+  }
+
+  .history-brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .history-brand-social {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .history-brand-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #009b9b;
+    color: #009b9b;
+    font-size: 0.9rem;
+  }
+
+  .history-brand-social a:hover {
+    background-color: #009b9b;
+    color: #ffffff;
+  }
+
+  .history-sections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+
+  .history-section-col h2 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #283036;
+    margin-bottom: 20px;
+  }
+
+  .history-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .history-links a {
+    font-size: 0.95rem;
+    color: var(--primary);
+  }
+
+  .history-links a:hover {
+    color: var(--primary-dark);
+  }
+
+  /* ===== FOOTER (reutilizamos estilo del home) ===== */
+  .main-footer {
+    position: relative;
+    padding: 50px 0 30px;
+    color: var(--white);
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+      url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+
+  .footer-col h4 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .footer-col a {
+    color: rgba(255,255,255,0.85);
+  }
+
+  .footer-col a:hover {
+    color: var(--primary);
+  }
+
+  .footer-col i {
+    color: var(--primary);
+    width: 20px;
+    margin-top: 3px;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .footer-tagline {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--primary);
+  }
+
+  .footer-bottom p:last-child {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ===== ANIMACIONES SCROLL ===== */
+  .reveal-right,
+  .reveal-left,
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+  }
+
+  .reveal-right {
+    transform: translateX(80px);
+  }
+
+  .reveal-left {
+    transform: translateX(-80px);
+  }
+
+  .reveal-up {
+    transform: translateY(80px);
+  }
+
+  .in-view {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 992px) {
+    .top-bar-left span:nth-child(n+4) {
+      display: none;
+    }
+
+    .history-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .top-bar-content {
+      justify-content: center;
+    }
+
+    .top-bar-left {
+      display: none;
+    }
+
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 280px;
+      height: 100vh;
+      background: var(--white);
+      flex-direction: column;
+      align-items: stretch;
+      padding: 80px 0 30px;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      z-index: 999;
+    }
+
+    .nav-menu.active {
+      right: 0;
+    }
+
+    .dropdown {
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      max-height: 0;
+      overflow: hidden;
+      box-shadow: none;
+      background: var(--light-gray);
+    }
+
+    .has-dropdown.active .dropdown {
+      max-height: 200px;
+    }
+
+    .history-sections-layout {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .history-sections-grid {
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+  }
+  </style>
+  <script defer src="history.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- HERO HISTORY (imagen izquierda, texto derecha) -->
+    <section class="history-hero">
+      <div class="container">
+        <div class="history-layout">
+          <div class="history-image-wrapper reveal-left">
+            <img src="https://osdemscnc.com/wp-content/uploads/2023/11/galeria15.jpg" alt="OSDEMS CNC machining">
+          </div>
+
+          <div class="history-text-block reveal-right">
+            <h1>ABOUT US...</h1>
+            <p>
+              Our company, OSDEMS Industrial, was founded in 2023 by Daniel Carrillo. The idea for the business came about
+              when Daniel noticed a gap in the market for high-quality, precision products. With his background in SMT
+              manufacturing process and Equipment and his passion for customers best service, best support, he set out to
+              create a company that would provide effective CNC Manufacturer parts to any industry bringing just in time
+              solutions while minimizing high cost production.
+            </p>
+            <span class="history-more-info">More info</span>
+            <p class="history-extra">
+              With his background in SMT manufacturing process and Equipment and his passion for customers best service,
+              best support, he set out to create a company that would provide effective CNC Manufacturer parts to any
+              industry bringing just in time solutions while minimizing high cost production.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OSDEMS CNC + PRODUCTS / CUSTOMER SOLUTIONS / SERVICE -->
+    <section class="history-sections">
+      <div class="container">
+        <div class="history-sections-layout reveal-up">
+          <div class="history-brand-block">
+            <div class="history-brand-logo">
+              <img src="https://osdemscnc.com/wp-content/uploads/2023/11/LOGO-CNC-512X512.png" alt="OSDEMS CNC Logo">
+            </div>
+            <div class="history-brand-social">
+              <a href="https://www.facebook.com/osdemsmaquinados?mibextid=JRoKGi" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://www.youtube.com/channel/UCzpFRl3eZQpBrdMwD-BHJdA" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a href="https://www.instagram.com/_parts.cnc_/?igshid=MzMyNGUyNmU2YQ%3D%3D" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/osdems-cnc/posts/?feedView=all" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="history-sections-grid">
+            <div class="history-section-col">
+              <h2>Products</h2>
+              <div class="history-links">
+                <a href="https://osdemscnc.com/history/a" target="_blank">Product world</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">New products</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">CAD Downloads</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">On-line catalogue</a>
+              </div>
+            </div>
+
+            <div class="history-section-col">
+              <h2>Customer Solutions</h2>
+              <div class="history-links">
+                <a href="https://osdemscnc.com/history/a" target="_blank">Configurators</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">Application examples</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">Project request</a>
+              </div>
+            </div>
+
+            <div class="history-section-col">
+              <h2>Service</h2>
+              <div class="history-links">
+                <a href="https://osdemscnc.com/history/a" target="_blank">Contact</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">Download center</a>
+                <a href="https://osdemscnc.com/history/a" target="_blank">Find contacts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

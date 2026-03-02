@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERVICES - OSDEMS CNC</title>
+    <!-- Iconos Font Awesome para el header/top bar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* ===== VARIABLES & RESET ===== */
+:root {
+    /* Colores principales basados en el header original (verde azulado) */
+    --primary: #009b9b;
+    --primary-dark: #007878;
+    --dark: #1a1a2e;
+    --gray: #4a4a5a;
+    --light-gray: #e8e8ed;
+    --white: #ffffff;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.85rem;
+    padding: 8px 0;
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.top-bar-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.top-bar-left span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.top-bar-left a {
+    color: var(--white);
+}
+
+.top-bar-left a:hover {
+    color: var(--primary);
+}
+
+.top-bar-right {
+    display: flex;
+    gap: 15px;
+}
+
+.top-bar-right a {
+    color: var(--white);
+    font-size: 1rem;
+}
+
+.top-bar-right a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ===== HEADER / NAV ===== */
+.main-header {
+    background: var(--white);
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    display: block;
+    height: 82px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-menu > li {
+    position: relative;
+}
+
+.nav-menu > li > a {
+    display: block;
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu > li > a:hover,
+.nav-menu > li > a.active {
+    color: var(--white);
+    background-color: var(--primary);
+}
+
+/* Dropdown */
+.has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.dropdown li a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    color: var(--dark);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.dropdown li:last-child a {
+    border-bottom: none;
+}
+
+.dropdown li a:hover {
+    background: var(--light-gray);
+    color: var(--primary);
+}
+
+.dropdown i.fa-chevron-down {
+    font-size: 0.7rem;
+    margin-left: 4px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark);
+}
+
+/* ===== FOOTER ===== */
+.main-footer {
+    position: relative;
+    padding: 50px 0 30px;
+    color: var(--white);
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+}
+
+.footer-col h4 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.footer-col a {
+    color: rgba(255,255,255,0.85);
+}
+
+.footer-col a:hover {
+    color: var(--primary);
+}
+
+.footer-col i {
+    color: var(--primary);
+    width: 20px;
+    margin-top: 3px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.footer-social a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social a:hover {
+    background: var(--primary);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-tagline {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.footer-bottom p:last-child {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .top-bar-left span:nth-child(n+4) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-bar-content {
+        justify-content: center;
+    }
+
+    .top-bar-left {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 80px 0 30px;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: none;
+        background: var(--light-gray);
+    }
+
+    .has-dropdown.active .dropdown {
+        max-height: 200px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+}
+    </style>
+    <script defer src="services.js"></script>
+    <style>
+        .page-content {
+            padding: 70px 0 100px;
+            background: linear-gradient(180deg, #e8e8ed 0%, #f4f4f6 100%);
+        }
+
+        .services-hero {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .page-title {
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+            color: #283036;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 600;
+        }
+
+        .services-intro {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #555b5b;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 155, 155, 0.12);
+        }
+
+        .service-card-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #283036;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .services-grid section ul li {
+            margin-bottom: 0.65rem;
+            color: #555b5b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .services-grid section ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5em;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main class="page-content">
+        <div class="container">
+            <section class="services-hero">
+                <h1 class="page-title">Services</h1>
+                <p class="services-intro">We offer a wide range of engineering and manufacturing solutions — from automation and robotics to precision dispensing, environmental control, and storage systems.</p>
+            </section>
+
+            <div class="services-grid">
+                <section class="service-card">
+                    <h2 class="service-card-title">Automation &amp; Robotics</h2>
+                    <ul>
+                        <li>Design analysis and optimization for tooling and assembly</li>
+                        <li>Medical Automated process</li>
+                        <li>SMT Automation</li>
+                        <li>Automation</li>
+                        <li>Industrial robot work cell</li>
+                        <li>Mass flow leak testing</li>
+                        <li>Material handling</li>
+                        <li>UV, visible light and thermal curing</li>
+                        <li>One and two part adhesives</li>
+                        <li>Laser mask welding</li>
+                        <li>Soldering and brazing</li>
+                        <li>Resistance and laser welding</li>
+                        <li>Ultrasonic and RF Welding</li>
+                    </ul>
+                </section>
+                <section class="service-card">
+                    <h2 class="service-card-title">Control &amp; Dispensing</h2>
+                    <ul>
+                        <li>Design for service and warranty channel support</li>
+                        <li>Design evaluation for manufacturability and test</li>
+                        <li>Servo and stepper motors</li>
+                        <li>PLC control in all common industrial platforms</li>
+                        <li>Coordinated dispensing</li>
+                        <li>Ink jets for precise volumes</li>
+                        <li>Micro solenoid valves for high precision dispensing</li>
+                        <li>Precision dispensing</li>
+                        <li>Industrial robot integration for flexible, multi-axis problems</li>
+                    </ul>
+                </section>
+                <section class="service-card">
+                    <h2 class="service-card-title">Motion &amp; Environment</h2>
+                    <ul>
+                        <li>Design Verification Test and Engineering Planning</li>
+                        <li>Rolling contact and air bearing stages</li>
+                        <li>Belt, ball screw and linear motor motion stages</li>
+                        <li>Drying processes</li>
+                        <li>CMP</li>
+                        <li>ESD control</li>
+                        <li>Special temperature environmental control</li>
+                        <li>Inert environmental control</li>
+                        <li>Aspetic environmental control</li>
+                    </ul>
+                </section>
+                <section class="service-card">
+                    <h2 class="service-card-title">Test &amp; Inspection</h2>
+                    <ul>
+                        <li>Fixtures</li>
+                        <li>FT</li>
+                        <li>ICT</li>
+                        <li>Electric & magnetic testing</li>
+                        <li>Vision inspection</li>
+                        <li>Optical power measurement for photonics products</li>
+                        <li>Resolutions to sub-micron</li>
+                        <li>Visible and IR</li>
+                        <li>Vision guided motion</li>
+                    </ul>
+                </section>
+                <section class="service-card">
+                    <h2 class="service-card-title">Storage Systems</h2>
+                    <ul>
+                        <li>Self-supporting: System whose main characteristic is that the shelving is part of the structure of the building.</li>
+                        <li>Carton Flow: For those processes where the speed of the assortment is essential.</li>
+                        <li>Dynamic: Ideal for storing high density products (up to 40 pallets deep).</li>
+                        <li>Mezzanine: Floor levels supported by the same rack structure.</li>
+                        <li>Cantilever: Rack for bars or very long products.</li>
+                        <li>Push back: Storage system by accumulation.</li>
+                        <li>Drive in: Perfect system for storing homogeneous products.</li>
+                        <li>Selective: Ideal system for storing products on pallets.</li>
+                        <li>Menorack: Manual loading rack with capacity up to 1800kg.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+</html>

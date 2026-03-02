@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INDUSTRIES - OSDEMS CNC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+/* ===== VARIABLES & RESET ===== */
+:root {
+  --primary: #009b9b;
+  --primary-dark: #007878;
+  --dark: #1a1a2e;
+  --gray: #4a4a5a;
+  --light-gray: #e8e8ed;
+  --white: #ffffff;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition: 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-main); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+ul { list-style: none; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== TOP BAR, HEADER, FOOTER (shared) ===== */
+.top-bar { background: var(--primary); color: var(--white); font-size: 0.85rem; padding: 8px 0; }
+.top-bar-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.top-bar-left { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+.top-bar-left span { display: flex; align-items: center; gap: 6px; }
+.top-bar-left a { color: var(--white); }
+.top-bar-left a:hover { color: var(--primary); }
+.top-bar-right { display: flex; gap: 15px; }
+.top-bar-right a { color: var(--white); font-size: 1rem; }
+.top-bar-right a:hover { color: var(--primary); transform: translateY(-2px); }
+
+.main-header { background: var(--white); border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+.navbar { display: flex; justify-content: center; align-items: center; padding: 20px; gap: 60px; }
+.logo { display: flex; align-items: center; }
+.logo img { display: block; height: 82px; width: auto; }
+.nav-menu { display: flex; align-items: center; gap: 10px; }
+.nav-menu > li { position: relative; }
+.nav-menu > li > a { display: block; padding: 12px 18px; font-weight: 600; font-size: 0.9rem; color: #000; text-transform: uppercase; letter-spacing: 0.5px; }
+.nav-menu > li > a:hover, .nav-menu > li > a.active { color: var(--white); background-color: var(--primary); }
+.has-dropdown:hover .dropdown { opacity: 1; visibility: visible; }
+.dropdown { position: absolute; top: 100%; left: 0; background: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.12); min-width: 180px; opacity: 0; visibility: hidden; transition: var(--transition); }
+.dropdown li a { display: block; padding: 12px 20px; font-size: 0.9rem; color: var(--dark); border-bottom: 1px solid var(--light-gray); }
+.dropdown li:last-child a { border-bottom: none; }
+.dropdown li a:hover { background: var(--light-gray); color: var(--primary); }
+.dropdown i.fa-chevron-down { font-size: 0.7rem; margin-left: 4px; }
+.mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+.main-footer { position: relative; padding: 50px 0 30px; color: var(--white); background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+.footer-col h4 { font-size: 1rem; margin-bottom: 20px; color: var(--white); text-transform: uppercase; letter-spacing: 1px; }
+.footer-col ul li { margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; }
+.footer-col a { color: rgba(255,255,255,0.85); }
+.footer-col a:hover { color: var(--primary); }
+.footer-col i { color: var(--primary); width: 20px; margin-top: 3px; }
+.footer-social { display: flex; gap: 15px; margin-bottom: 15px; }
+.footer-social a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.footer-social a:hover { background: var(--primary); }
+.footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+.footer-tagline { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+.footer-bottom p:last-child { font-size: 0.9rem; opacity: 0.85; max-width: 600px; margin: 0 auto; }
+
+@media (max-width: 992px) { .top-bar-left span:nth-child(n+4) { display: none; } }
+@media (max-width: 768px) {
+  .top-bar-content { justify-content: center; }
+  .top-bar-left { display: none; }
+  .mobile-menu-btn { display: block; }
+  .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--white); flex-direction: column; align-items: stretch; padding: 80px 0 30px; box-shadow: -5px 0 20px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 999; }
+  .nav-menu.active { right: 0; }
+  .dropdown { position: static; opacity: 1; visibility: visible; max-height: 0; overflow: hidden; box-shadow: none; background: var(--light-gray); }
+  .has-dropdown.active .dropdown { max-height: 200px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 35px; }
+}
+
+/* ===== INDUSTRY ROWS ===== */
+.ind-row {
+  display: flex;
+  align-items: stretch;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  min-height: 380px;
+}
+.ind-row:last-of-type {
+  margin-bottom: 0;
+}
+.ind-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.ind-row-img {
+  width: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.ind-row-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.ind-row:hover .ind-row-img img {
+  transform: scale(1.03);
+}
+.ind-row-body {
+  width: 50%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 50px;
+}
+.ind-row:nth-child(odd) .ind-row-body {
+  background: #ffffff;
+}
+.ind-row:nth-child(even) .ind-row-body {
+  background: #f4f4f6;
+}
+.ind-row-body h3 {
+  font-size: 1.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.ind-row-body p {
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.75;
+}
+.ind-row-body .ind-important {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--light-gray);
+}
+.ind-row-body .ind-important strong {
+  display: block;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.ind-row-body .ind-important p {
+  font-size: 0.85rem;
+}
+
+/* ===== WHY + CTA COMBINED ===== */
+.ind-bottom {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  background: #f4f4f6;
+}
+.ind-bottom-left {
+  width: 50%;
+  flex-shrink: 0;
+  padding: 50px 50px;
+}
+.ind-bottom-left h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #283036;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.ind-bottom-left .ind-why-line {
+  width: 50px;
+  height: 3px;
+  background: var(--primary);
+  margin: 16px 0 20px;
+}
+.ind-bottom-left .ind-why-intro {
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.ind-bottom-left .ind-why-list {
+  list-style: none;
+}
+.ind-bottom-left .ind-why-list li {
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.7;
+}
+.ind-bottom-left .ind-why-list li strong {
+  color: #283036;
+}
+.ind-bottom-right {
+  width: 50%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ind-bottom-right .ind-bottom-img {
+  flex: 1;
+  overflow: hidden;
+}
+.ind-bottom-right .ind-bottom-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ind-bottom-right .ind-bottom-cta {
+  background: rgba(0,0,0,0.04);
+  padding: 28px 30px;
+}
+.ind-bottom-right .ind-bottom-cta h3 {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #555b5b;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.ind-bottom-right .ind-bottom-cta p {
+  font-size: 0.88rem;
+  color: #555b5b;
+  line-height: 1.7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .ind-row, .ind-row:nth-child(even) {
+    flex-direction: column;
+  }
+  .ind-row-img {
+    width: 100%;
+    height: 250px;
+  }
+  .ind-row-body {
+    width: 100%;
+    padding: 30px 20px;
+  }
+  .ind-bottom {
+    flex-direction: column;
+  }
+  .ind-bottom-left,
+  .ind-bottom-right {
+    width: 100%;
+  }
+  .ind-bottom-left {
+    padding: 30px 20px;
+  }
+}
+  </style>
+  <script defer src="industries.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- INDUSTRY ROWS -->
+    <!-- Manufacturing (img left) -->
+    <div class="ind-row">
+      <div class="ind-row-img">
+        <img src="https://osdemscnc.com/wp-content/uploads/2025/03/danielindustrial1325_45534_create_ultra_high_definition_image_c64e0c34-784d-44f4-a5c2-3dc41949345e_0.png" alt="Manufacturing automation">
+      </div>
+      <div class="ind-row-body">
+        <h3>Manufacturing</h3>
+        <p>Manufacturing is the backbone of global economies, and automation is revolutionizing how products are made. From precision machining to assembly line optimization, OSDEMS CNC provides solutions that improve accuracy, speed, and consistency in production processes.</p>
+        <div class="ind-important">
+          <strong>Why It's Important:</strong>
+          <p>In a market where efficiency and quality are paramount, automation reduces human error, minimizes waste, and ensures faster time-to-market. Companies that adopt automation gain a competitive edge by meeting demand more effectively and scaling operations seamlessly.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automotive (img right via nth-child even) -->
+    <div class="ind-row">
+      <div class="ind-row-img">
+        <img src="https://osdemscnc.com/wp-content/uploads/2025/03/danielindustrial1325_45534_create_ultra_high_definition_image_9e1b5c6a-ecd6-48cd-be4f-3b04cb7a467a_1.png" alt="Automotive automation">
+      </div>
+      <div class="ind-row-body">
+        <h3>Automotive</h3>
+        <p>The automotive industry relies heavily on precision engineering and high-volume production. OSDEMS CNC offers automation solutions for parts manufacturing, engine components, and custom fittings, ensuring durability and precision.</p>
+        <div class="ind-important">
+          <strong>Why It's Important:</strong>
+          <p>With the rise of electric vehicles and smart car technologies, the automotive sector demands faster innovation and higher precision. Automation enables manufacturers to keep up with trends, reduce production costs, and maintain stringent quality standards.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aerospace (img left) -->
+    <div class="ind-row">
+      <div class="ind-row-img">
+        <img src="https://osdemscnc.com/wp-content/uploads/2025/03/danielindustrial1325_45534_create_ultra_high_definition_image_7bf940d7-e9e6-45c7-8d9f-e87d30e69989_1.png" alt="Aerospace automation">
+      </div>
+      <div class="ind-row-body">
+        <h3>Aerospace</h3>
+        <p>Aerospace manufacturing requires extreme precision and adherence to strict safety standards. OSDEMS CNC provides automation solutions for crafting complex components like turbine blades, fuselage parts, and landing gear.</p>
+        <div class="ind-important">
+          <strong>Why It's Important:</strong>
+          <p>The aerospace industry operates in a highly regulated environment where even the smallest error can have catastrophic consequences. Automation ensures consistency, reduces lead times, and helps manufacturers meet rigorous compliance requirements.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Electronics (img right) -->
+    <div class="ind-row">
+      <div class="ind-row-img">
+        <img src="https://osdemscnc.com/wp-content/uploads/2025/03/danielindustrial1325_45534_create_ultra_high_definition_image_c64e0c34-784d-44f4-a5c2-3dc41949345e_2.png" alt="Electronics automation">
+      </div>
+      <div class="ind-row-body">
+        <h3>Electronics</h3>
+        <p>From circuit boards to consumer electronics, the electronics industry requires intricate and miniaturized components. OSDEMS CNC provides automation solutions for precise machining and assembly of electronic parts.</p>
+        <div class="ind-important">
+          <strong>Why It's Important:</strong>
+          <p>The electronics market is highly competitive, with rapid technological advancements and short product lifecycles. Automation ensures faster production, reduces defects, and enables manufacturers to keep up with consumer demands.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Energy (img left) -->
+    <div class="ind-row">
+      <div class="ind-row-img">
+        <img src="https://osdemscnc.com/wp-content/uploads/2025/03/danielindustrial1325_45534_The_energy_sector_offers_automatio_a5718f02-7a51-454e-8839-5d0d95a76a50_2.png" alt="Energy automation">
+      </div>
+      <div class="ind-row-body">
+        <h3>Energy</h3>
+        <p>The energy sector, including renewable energy and oil & gas, relies on robust and precise components. OSDEMS CNC offers automation solutions for manufacturing wind turbine parts, solar panel frames, and drilling equipment.</p>
+        <div class="ind-important">
+          <strong>Why It's Important:</strong>
+          <p>As the world shifts toward sustainable energy, the demand for efficient and reliable components grows. Automation helps energy companies reduce production costs, improve component durability, and accelerate the transition to green energy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY AUTOMATION + CTA -->
+    <div class="ind-bottom">
+      <div class="ind-bottom-left">
+        <h2>Why Automation Matters in Today's Competitive Market</h2>
+        <div class="ind-why-line"></div>
+        <p class="ind-why-intro">In an era defined by rapid technological advancements and increasing consumer expectations, automation is no longer a luxury — it's a necessity.</p>
+        <ul class="ind-why-list">
+          <li><strong>Efficiency:</strong> Automation streamlines processes, reducing manual labor and operational costs.</li>
+          <li><strong>Precision:</strong> Advanced CNC technology ensures consistent quality and accuracy.</li>
+          <li><strong>Scalability:</strong> Automated systems allow businesses to scale production without compromising quality.</li>
+          <li><strong>Innovation:</strong> Automation frees up resources, enabling companies to focus on research and development.</li>
+          <li><strong>Sustainability:</strong> By minimizing waste and optimizing resource use, automation supports eco-friendly practices.</li>
+        </ul>
+      </div>
+      <div class="ind-bottom-right">
+        <div class="ind-bottom-img">
+          <img src="https://osdemscnc.com/wp-content/uploads/elementor/thumbs/danielindustrial1325_45534_create_ultra_high_definition_image_f6b568d6-922f-42f2-9e2b-83e2fea6a699_2-r2ri3lkdjw63dskhwygxszsl2dgmin6t0arphemmdu.png" alt="Automation technology">
+        </div>
+        <div class="ind-bottom-cta">
+          <h3>OSDEMS CNC: Precision Automation for a Smarter Tomorrow.</h3>
+          <p>At OSDEMS CNC, we're committed to helping businesses across industries harness the power of automation to stay ahead in today's competitive market. Let's build the future together — one innovative solution at a time.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

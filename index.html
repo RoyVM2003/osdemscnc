@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME - OSDEMS CNC</title>
+    <!-- Iconos Font Awesome para el header/top bar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* ===== VARIABLES & RESET ===== */
+:root {
+    /* Colores principales basados en el header original (verde azulado) */
+    --primary: #009b9b;
+    --primary-dark: #007878;
+    --dark: #1a1a2e;
+    --gray: #4a4a5a;
+    --light-gray: #e8e8ed;
+    --white: #ffffff;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.85rem;
+    padding: 8px 0;
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.top-bar-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.top-bar-left span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.top-bar-left a {
+    color: var(--white);
+}
+
+.top-bar-left a:hover {
+    color: var(--primary);
+}
+
+.top-bar-right {
+    display: flex;
+    gap: 15px;
+}
+
+.top-bar-right a {
+    color: var(--white);
+    font-size: 1rem;
+}
+
+.top-bar-right a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ===== HEADER / NAV ===== */
+.main-header {
+    background: var(--white);
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    display: block;
+    height: 82px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-menu > li {
+    position: relative;
+}
+
+.nav-menu > li > a {
+    display: block;
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu > li > a:hover,
+.nav-menu > li > a.active {
+    color: var(--white);
+    background-color: var(--primary);
+}
+
+/* Dropdown */
+.has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.dropdown li a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    color: var(--dark);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.dropdown li:last-child a {
+    border-bottom: none;
+}
+
+.dropdown li a:hover {
+    background: var(--light-gray);
+    color: var(--primary);
+}
+
+.dropdown i.fa-chevron-down {
+    font-size: 0.7rem;
+    margin-left: 4px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark);
+}
+
+/* ===== OUR CAPABILITIES ===== */
+.capabilities {
+    padding: 80px 0 60px;
+    background: #e7e3dc;
+}
+
+.capabilities-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 25px;
+    font-size: 1rem;
+    color: #555b5b;
+    font-style: italic;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 50px;
+    color: #283036;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+}
+
+.capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 45px;
+    column-gap: 40px;
+}
+
+.capability-item {
+    text-align: center;
+    padding: 0 25px;
+}
+
+.capability-item h3 {
+    font-size: 1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #283036;
+    margin-bottom: 15px;
+}
+
+.capability-item p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #555b5b;
+}
+
+/* Animaciones de entrada tipo scroll para esta sección */
+.reveal-right,
+.reveal-left,
+.reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+}
+
+.reveal-right {
+    transform: translateX(80px);
+}
+
+.reveal-left {
+    transform: translateX(-80px);
+}
+
+.reveal-up {
+    transform: translateY(80px);
+}
+
+.in-view {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+}
+
+/* ===== CAPABILITIES CTA (PARTNERSHIP) ===== */
+.capabilities-cta {
+    padding: 80px 0;
+    background-color: #e7e3dc;
+    text-align: center;
+}
+
+.capabilities-cta-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #283036;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+.ubicacion {
+    margin-top: 35px;
+    padding-top: 35px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.ubicacion h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.map-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.btn-map {
+    display: inline-block;
+    padding: 10px 25px;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.btn-map:hover {
+    background: var(--primary-dark);
+}
+
+/* ===== FOOTER ===== */
+.main-footer {
+    position: relative;
+    padding: 50px 0 30px;
+    color: var(--white);
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+}
+
+.footer-col h4 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.footer-col a {
+    color: rgba(255,255,255,0.85);
+}
+
+.footer-col a:hover {
+    color: var(--primary);
+}
+
+.footer-col i {
+    color: var(--primary);
+    width: 20px;
+    margin-top: 3px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.footer-social a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social a:hover {
+    background: var(--primary);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-tagline {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.footer-bottom p:last-child {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .top-bar-left span:nth-child(n+4) {
+        display: none;
+    }
+
+    .carousel-container {
+        padding: 40px 50px 70px;
+    }
+
+    .slide-content h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-bar-content {
+        justify-content: center;
+    }
+
+    .top-bar-left {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 80px 0 30px;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: none;
+        background: var(--light-gray);
+    }
+
+    .has-dropdown.active .dropdown {
+        max-height: 200px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+    </style>
+    <script defer src="home.js"></script>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <!-- OUR CAPABILITIES -->
+    <section class="capabilities">
+        <div class="container">
+            <p class="capabilities-intro reveal-right">
+                On today's competitive world, cost reduction plays an important part, it is not just to bring any machine to the line, but to consider a wider picture.
+            </p>
+            <h2 class="section-title reveal-left">OUR CAPABILITIES</h2>
+            
+            <div class="capabilities-grid">
+                <article class="capability-item reveal-up">
+                    <h3>Fixtures</h3>
+                    <p>In-circuit testing provides electronic manufacturers a reliable, high fault coverage verification method for the assembly process.</p>
+                </article>
+                <article class="capability-item reveal-up">
+                    <h3>Design</h3>
+                    <p>In-circuit testing (ICT) is an example electrical probe tests a populated printed circuit board (PCB), checking for shorts, opens, resistance, capacitance, and other basic quantities which will show whether the assembly was correctly fabricated.</p>
+                </article>
+                <article class="capability-item reveal-up">
+                    <h3>Functional test Systems</h3>
+                    <p>These systems can collect and process data, and can be tailored to specific applications.</p>
+                </article>
+                <article class="capability-item reveal-up">
+                    <h3>ICT</h3>
+                    <p>Typical ICT uses a 'bed of nails' to make connection. This is an array of spring probes that contact the PCB, usually by pulling the board down on to them with a vacuum pump although 'flying probe' systems are available. Behind the probes is a multiplexer which routes voltages and test instruments to the desired combination of probes to make two or four wire measurements and sometimes to apply 'guard' potentials to isolate unwanted current paths.</p>
+                </article>
+                <article class="capability-item reveal-up">
+                    <h3>FT</h3>
+                    <p>Functional test equipment is used to test the performance of a piece of equipment by simulating its real-world working environment. The goal of functional testing is to ensure that the equipment is safe to use and can perform all of its functions as intended. Functional test equipment can help identify and address potential points of failure.</p>
+                </article>
+                <article class="capability-item reveal-up">
+                    <h3>Automation</h3>
+                    <p>To enable success in achieving your design for automated manufacturing objectives and goals, we recommend creating thoughtful business and product requirements to inform your automation design processes. If you create a product that is suited for automation, you set yourself up for success down the line during the design of the automation equipment, product assembly, and test processes once the automation is deployed in the field.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="capabilities-cta">
+        <div class="container">
+            <p class="capabilities-cta-text reveal-up">
+                IF YOU ARE LOOKING FOR A RELIABLE PARTNERSHIP TO BRING THE BEST SOLUTION, WE ARE HERE FOR YOU!
+                WHETHER IS A SIMPLE FT SOLUTION YOU ARE LOOKING FOR OR A HIGH VOLTAGE, WE CAN DO IT FOR YOU!
+            </p>
+        </div>
+    </section>
+
+    <div id="site-footer"></div>
+</body>
+</html>

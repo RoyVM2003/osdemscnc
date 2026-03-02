@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARRER - OSDEMS CNC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+/* ===== VARIABLES & RESET ===== */
+:root {
+  --primary: #009b9b;
+  --primary-dark: #007878;
+  --dark: #1a1a2e;
+  --gray: #4a4a5a;
+  --light-gray: #e8e8ed;
+  --white: #ffffff;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition: 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-main); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+ul { list-style: none; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== TOP BAR, HEADER, FOOTER (shared) ===== */
+.top-bar { background: var(--primary); color: var(--white); font-size: 0.85rem; padding: 8px 0; }
+.top-bar-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.top-bar-left { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+.top-bar-left span { display: flex; align-items: center; gap: 6px; }
+.top-bar-left a { color: var(--white); }
+.top-bar-left a:hover { color: var(--primary); }
+.top-bar-right { display: flex; gap: 15px; }
+.top-bar-right a { color: var(--white); font-size: 1rem; }
+.top-bar-right a:hover { color: var(--primary); transform: translateY(-2px); }
+
+.main-header { background: var(--white); border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+.navbar { display: flex; justify-content: center; align-items: center; padding: 20px; gap: 60px; }
+.logo { display: flex; align-items: center; }
+.logo img { display: block; height: 82px; width: auto; }
+.nav-menu { display: flex; align-items: center; gap: 10px; }
+.nav-menu > li { position: relative; }
+.nav-menu > li > a { display: block; padding: 12px 18px; font-weight: 600; font-size: 0.9rem; color: #000; text-transform: uppercase; letter-spacing: 0.5px; }
+.nav-menu > li > a:hover, .nav-menu > li > a.active { color: var(--white); background-color: var(--primary); }
+.has-dropdown:hover .dropdown { opacity: 1; visibility: visible; }
+.dropdown { position: absolute; top: 100%; left: 0; background: var(--white); box-shadow: 0 8px 25px rgba(0,0,0,0.12); min-width: 180px; opacity: 0; visibility: hidden; transition: var(--transition); }
+.dropdown li a { display: block; padding: 12px 20px; font-size: 0.9rem; color: var(--dark); border-bottom: 1px solid var(--light-gray); }
+.dropdown li:last-child a { border-bottom: none; }
+.dropdown li a:hover { background: var(--light-gray); color: var(--primary); }
+.dropdown i.fa-chevron-down { font-size: 0.7rem; margin-left: 4px; }
+.mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+.main-footer { position: relative; padding: 50px 0 30px; color: var(--white); background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('https://osdemscnc.com/wp-content/uploads/2024/09/hector-martinez-110928-unsplash.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+.footer-col h4 { font-size: 1rem; margin-bottom: 20px; color: var(--white); text-transform: uppercase; letter-spacing: 1px; }
+.footer-col ul li { margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; }
+.footer-col a { color: rgba(255,255,255,0.85); }
+.footer-col a:hover { color: var(--primary); }
+.footer-col i { color: var(--primary); width: 20px; margin-top: 3px; }
+.footer-social { display: flex; gap: 15px; margin-bottom: 15px; }
+.footer-social a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.footer-social a:hover { background: var(--primary); }
+.footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+.footer-tagline { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+.footer-bottom p:last-child { font-size: 0.9rem; opacity: 0.85; max-width: 600px; margin: 0 auto; }
+
+@media (max-width: 992px) { .top-bar-left span:nth-child(n+4) { display: none; } }
+@media (max-width: 768px) {
+  .top-bar-content { justify-content: center; }
+  .top-bar-left { display: none; }
+  .mobile-menu-btn { display: block; }
+  .nav-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--white); flex-direction: column; align-items: stretch; padding: 80px 0 30px; box-shadow: -5px 0 20px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 999; }
+  .nav-menu.active { right: 0; }
+  .dropdown { position: static; opacity: 1; visibility: visible; max-height: 0; overflow: hidden; box-shadow: none; background: var(--light-gray); }
+  .has-dropdown.active .dropdown { max-height: 200px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 35px; }
+}
+
+/* ===== WE'RE LOOKING LABEL ===== */
+.career-label {
+  text-align: center;
+  padding: 50px 20px 10px;
+}
+.career-label span {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  position: relative;
+  padding-bottom: 10px;
+}
+.career-label span::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+}
+
+/* ===== JOB CARD ===== */
+.career-jobs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+.job-card {
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  transition: box-shadow 0.3s ease;
+}
+.job-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+.job-card-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  padding: 28px 35px;
+}
+.job-card-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.job-card-body {
+  padding: 35px;
+}
+.job-card-body > blockquote {
+  background: #f4f4f6;
+  border-left: 4px solid var(--primary);
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.7;
+  font-style: italic;
+}
+.job-card-body .job-desc {
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.job-card-body .job-detail-text {
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+.job-card-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.job-card-body ul {
+  list-style: none;
+  margin-bottom: 28px;
+}
+.job-card-body ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #555b5b;
+  line-height: 1.7;
+}
+.job-card-body ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+/* ===== APPLY FORM ===== */
+.career-apply {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 0;
+}
+.apply-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.apply-line {
+  width: 50px;
+  height: 3px;
+  background: var(--primary);
+  margin: 0 auto 35px;
+}
+.apply-form {
+  border-top: 1px solid var(--light-gray);
+  padding: 30px 0 0;
+}
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 0;
+}
+.form-group {
+  flex: 1;
+}
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+.form-group label .req {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.88rem;
+  font-family: var(--font-main);
+  color: var(--dark);
+  background: transparent;
+  transition: border-color 0.3s ease;
+}
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder {
+  color: #b0b0b0;
+}
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+.form-group input[type="file"] {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-family: var(--font-main);
+  margin-top: 6px;
+}
+.btn-submit {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-main);
+}
+.btn-submit:hover {
+  background: var(--primary-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .job-card-header { padding: 22px 20px; }
+  .job-card-body { padding: 25px 20px; }
+  .form-row { flex-direction: column; gap: 18px; }
+}
+  </style>
+  <script defer src="career.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- LABEL -->
+    <div class="career-label">
+      <span>we're looking</span>
+    </div>
+
+    <!-- JOB LISTINGS -->
+    <section class="career-jobs">
+      <article class="job-card">
+        <div class="job-card-header">
+          <h2>Jr. Engineer AutoCAD SOLIDWORKS Automation</h2>
+        </div>
+        <div class="job-card-body">
+          <blockquote>
+            We're looking for candidates with the following experience and skills; however, even if you don't meet all the requirements, you can apply for a vacancy we haven't yet posted.
+          </blockquote>
+
+          <p class="job-desc">We are seeking a creative and detailed Autocad/Solidworks/Automation Designer to join our dynamic team. The ideal candidate will be responsible for producing innovative designs that meet client specifications and project requirements.</p>
+
+          <p class="job-detail-text">This position requires proficiency in various design programs and a solid understanding of mechanical principles. The designer will collaborate with engineers and other team members to ensure all designs are functional, efficient, and aesthetically pleasing.</p>
+
+          <p class="job-detail-text">The position involves field surveying, preparing design drawings, general and detailed layouts, and bills of materials for use during shop floor manufacturing and field installation of elements such as COBOTs, industrial robots, test equipment, and automation of electronics and automotive manufacturing processes.</p>
+
+          <h3>Responsibilities</h3>
+          <ul>
+            <li>Ability to travel to client sites and mastery of field measurements with measuring tapes</li>
+            <li>Ability to produce drawings of various shapes, integration of COBOTS equipment, conveyors, etc.</li>
+            <li>Ability to collaborate with the Manufacturing department to ensure understanding of the drawings.</li>
+          </ul>
+
+          <h3>Skills, Training and Experience</h3>
+          <ul>
+            <li>Mastery of AutoCAD 2D, SolidWorks and all MS Office programs.</li>
+            <li>High motivation and attention to detail.</li>
+            <li>Basic knowledge of welding and steel fabrication symbols (layout, cutting, bending, flaring, and welding).</li>
+            <li>Solid knowledge of mathematics (trigonometry and geometry) and mechanical aptitude.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- APPLY FORM -->
+    <section class="career-apply">
+      <h2 class="apply-title">Apply Here</h2>
+      <div class="apply-line"></div>
+      <form class="apply-form" action="#" method="POST" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="apply-name">Name <span class="req">*</span></label>
+            <input type="text" id="apply-name" name="name" placeholder="Ex. John" required>
+          </div>
+          <div class="form-group">
+            <label for="apply-email">Email <span class="req">*</span></label>
+            <input type="email" id="apply-email" name="email" placeholder="Ex. john@mycompany.com" required>
+          </div>
+          <div class="form-group">
+            <label for="apply-cv">CV <span class="req">*</span></label>
+            <input type="file" id="apply-cv" name="cv" accept=".pdf,.doc,.docx" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>
