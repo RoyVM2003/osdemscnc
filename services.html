@@ -430,93 +430,204 @@ ul {
             border-radius: 50%;
         }
     </style>
+    <link rel="stylesheet" href="design-system.css">
+    <script defer src="site-effects.js"></script>
+    <script defer src="services-filters.js"></script>
+    <script defer src="site-enhancements.js"></script>
 </head>
 <body>
     <div id="site-header"></div>
 
     <main class="page-content">
+        <section class="module-shell">
+            <div class="module-hero">
+                <div class="module-hero-copy">
+                    <span class="module-eyebrow">Industrial Services</span>
+                    <h1 class="module-title">From Concept To Production Line Performance</h1>
+                    <p class="module-subtitle">
+                        Our services cover automation, control, testing and storage architecture so each project can move from design intent to stable day-to-day operation.
+                    </p>
+                    <div class="module-kpis">
+                        <div class="module-kpi"><strong>Automation</strong>Robotics and process integration</div>
+                        <div class="module-kpi"><strong>Validation</strong>Test and inspection methods</div>
+                        <div class="module-kpi"><strong>Support</strong>Manufacturability-oriented design</div>
+                    </div>
+                </div>
+                <div class="media-placeholder">
+                    <h3>Video Placeholder - Service Portfolio Walkthrough</h3>
+                    <span class="media-spec">1920 x 1080 px | 16:9</span>
+                    <p>Suggested content: sequence of automation cells, PLC control panels, dispensing and testing stations.</p>
+                </div>
+            </div>
+        </section>
+        <hr class="module-divider">
         <div class="container">
             <section class="services-hero">
                 <h1 class="page-title">Services</h1>
                 <p class="services-intro">We offer a wide range of engineering and manufacturing solutions — from automation and robotics to precision dispensing, environmental control, and storage systems.</p>
             </section>
 
-            <div class="services-grid">
-                <section class="service-card">
-                    <h2 class="service-card-title">Automation &amp; Robotics</h2>
-                    <ul>
-                        <li>Design analysis and optimization for tooling and assembly</li>
-                        <li>Medical Automated process</li>
-                        <li>SMT Automation</li>
-                        <li>Automation</li>
-                        <li>Industrial robot work cell</li>
-                        <li>Mass flow leak testing</li>
-                        <li>Material handling</li>
-                        <li>UV, visible light and thermal curing</li>
-                        <li>One and two part adhesives</li>
-                        <li>Laser mask welding</li>
-                        <li>Soldering and brazing</li>
-                        <li>Resistance and laser welding</li>
-                        <li>Ultrasonic and RF Welding</li>
-                    </ul>
-                </section>
-                <section class="service-card">
-                    <h2 class="service-card-title">Control &amp; Dispensing</h2>
-                    <ul>
-                        <li>Design for service and warranty channel support</li>
-                        <li>Design evaluation for manufacturability and test</li>
-                        <li>Servo and stepper motors</li>
-                        <li>PLC control in all common industrial platforms</li>
-                        <li>Coordinated dispensing</li>
-                        <li>Ink jets for precise volumes</li>
-                        <li>Micro solenoid valves for high precision dispensing</li>
-                        <li>Precision dispensing</li>
-                        <li>Industrial robot integration for flexible, multi-axis problems</li>
-                    </ul>
-                </section>
-                <section class="service-card">
-                    <h2 class="service-card-title">Motion &amp; Environment</h2>
-                    <ul>
-                        <li>Design Verification Test and Engineering Planning</li>
-                        <li>Rolling contact and air bearing stages</li>
-                        <li>Belt, ball screw and linear motor motion stages</li>
-                        <li>Drying processes</li>
-                        <li>CMP</li>
-                        <li>ESD control</li>
-                        <li>Special temperature environmental control</li>
-                        <li>Inert environmental control</li>
-                        <li>Aspetic environmental control</li>
-                    </ul>
-                </section>
-                <section class="service-card">
-                    <h2 class="service-card-title">Test &amp; Inspection</h2>
-                    <ul>
-                        <li>Fixtures</li>
-                        <li>FT</li>
-                        <li>ICT</li>
-                        <li>Electric & magnetic testing</li>
-                        <li>Vision inspection</li>
-                        <li>Optical power measurement for photonics products</li>
-                        <li>Resolutions to sub-micron</li>
-                        <li>Visible and IR</li>
-                        <li>Vision guided motion</li>
-                    </ul>
-                </section>
-                <section class="service-card">
-                    <h2 class="service-card-title">Storage Systems</h2>
-                    <ul>
-                        <li>Self-supporting: System whose main characteristic is that the shelving is part of the structure of the building.</li>
-                        <li>Carton Flow: For those processes where the speed of the assortment is essential.</li>
-                        <li>Dynamic: Ideal for storing high density products (up to 40 pallets deep).</li>
-                        <li>Mezzanine: Floor levels supported by the same rack structure.</li>
-                        <li>Cantilever: Rack for bars or very long products.</li>
-                        <li>Push back: Storage system by accumulation.</li>
-                        <li>Drive in: Perfect system for storing homogeneous products.</li>
-                        <li>Selective: Ideal system for storing products on pallets.</li>
-                        <li>Menorack: Manual loading rack with capacity up to 1800kg.</li>
-                    </ul>
-                </section>
+            <div class="services-top-tools">
+                <div class="services-filterbar">
+                    <button class="service-chip active" data-filter="all" type="button">All</button>
+                    <button class="service-chip" data-filter="automation" type="button">Automation</button>
+                    <button class="service-chip" data-filter="control" type="button">Control</button>
+                    <button class="service-chip" data-filter="motion" type="button">Motion</button>
+                    <button class="service-chip" data-filter="test" type="button">Test</button>
+                    <button class="service-chip" data-filter="storage" type="button">Storage</button>
+                </div>
+                <div class="services-view-toggle">
+                    <button type="button" class="services-view-btn active" data-view="grid">Grid</button>
+                    <button type="button" class="services-view-btn" data-view="list">List</button>
+                </div>
             </div>
+
+            <div class="services-modern-grid">
+                <article class="service-modern-card" data-group="automation">
+                    <div class="service-modern-head">
+                        <h3>Automation &amp; Robotics</h3>
+                        <span class="service-modern-tag">Automation</span>
+                    </div>
+                    <div class="service-modern-body">
+                        <ul>
+                            <li>Design analysis and optimization for tooling and assembly</li>
+                            <li>SMT automation and medical automated process</li>
+                            <li>Industrial robot work cell and material handling</li>
+                            <li>Mass flow leak testing and thermal curing support</li>
+                            <li>Laser mask, resistance and ultrasonic welding options</li>
+                        </ul>
+                        <div class="service-media-slot">
+                            <strong>Image/Video Slot - Automation Cell</strong>
+                            <span>Recommended: 1440 x 900 px (16:10)</span>
+                        </div>
+                        <div class="service-modern-cta">
+                            <a href="career.html" class="btn-secondary-modern">Request this service</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="service-modern-card" data-group="control">
+                    <div class="service-modern-head">
+                        <h3>Control &amp; Dispensing</h3>
+                        <span class="service-modern-tag">Control</span>
+                    </div>
+                    <div class="service-modern-body">
+                        <ul>
+                            <li>Manufacturability and test-oriented design evaluation</li>
+                            <li>Servo and stepper motors integration</li>
+                            <li>PLC control in common industrial platforms</li>
+                            <li>Coordinated dispensing with ink jets and micro valves</li>
+                            <li>Precision dispensing for flexible multi-axis problems</li>
+                        </ul>
+                        <div class="service-media-slot">
+                            <strong>Image/Video Slot - PLC and Dispensing</strong>
+                            <span>Recommended: 1440 x 900 px (16:10)</span>
+                        </div>
+                        <div class="service-modern-cta">
+                            <a href="career.html" class="btn-secondary-modern">Request this service</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="service-modern-card" data-group="motion">
+                    <div class="service-modern-head">
+                        <h3>Motion &amp; Environment</h3>
+                        <span class="service-modern-tag">Motion</span>
+                    </div>
+                    <div class="service-modern-body">
+                        <ul>
+                            <li>Design verification and engineering planning</li>
+                            <li>Rolling contact, air bearing and linear motion stages</li>
+                            <li>Belt, ball screw and linear motor solutions</li>
+                            <li>Drying process support and CMP-related integration</li>
+                            <li>ESD and controlled environment configurations</li>
+                        </ul>
+                        <div class="service-media-slot">
+                            <strong>Image/Video Slot - Motion Platform</strong>
+                            <span>Recommended: 1440 x 900 px (16:10)</span>
+                        </div>
+                        <div class="service-modern-cta">
+                            <a href="career.html" class="btn-secondary-modern">Request this service</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="service-modern-card" data-group="test">
+                    <div class="service-modern-head">
+                        <h3>Test &amp; Inspection</h3>
+                        <span class="service-modern-tag">Validation</span>
+                    </div>
+                    <div class="service-modern-body">
+                        <ul>
+                            <li>Fixtures, FT and ICT integration</li>
+                            <li>Electric and magnetic testing setups</li>
+                            <li>Vision inspection with guided motion capability</li>
+                            <li>Optical power measurement for photonics products</li>
+                            <li>Visible and IR testing with sub-micron resolution scope</li>
+                        </ul>
+                        <div class="service-media-slot">
+                            <strong>Image/Video Slot - Inspection Station</strong>
+                            <span>Recommended: 1440 x 900 px (16:10)</span>
+                        </div>
+                        <div class="service-modern-cta">
+                            <a href="career.html" class="btn-secondary-modern">Request this service</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="service-modern-card" data-group="storage">
+                    <div class="service-modern-head">
+                        <h3>Storage Systems</h3>
+                        <span class="service-modern-tag">Storage</span>
+                    </div>
+                    <div class="service-modern-body">
+                        <ul>
+                            <li>Self-supporting, carton flow and dynamic systems</li>
+                            <li>Mezzanine, cantilever and push-back configurations</li>
+                            <li>Drive-in and selective pallet storage systems</li>
+                            <li>Menorack manual loading with capacity up to 1800kg</li>
+                            <li>Layouts adapted for density, speed and product type</li>
+                        </ul>
+                        <div class="service-media-slot">
+                            <strong>Image/Video Slot - Warehouse Layout</strong>
+                            <span>Recommended: 1440 x 900 px (16:10)</span>
+                        </div>
+                        <div class="service-modern-cta">
+                            <a href="career.html" class="btn-secondary-modern">Request this service</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <section class="services-matrix">
+                <h2 class="section-title-modern">Capability Matrix</h2>
+                <div class="services-matrix-grid">
+                    <article class="career-box">
+                        <h3>Automation x Manufacturing</h3>
+                        <p>Robotic cell integration, line balancing and throughput stability.</p>
+                    </article>
+                    <article class="career-box">
+                        <h3>Control x Electronics</h3>
+                        <p>Precision dispensing and PLC orchestration for sensitive processes.</p>
+                    </article>
+                    <article class="career-box">
+                        <h3>Test x Automotive</h3>
+                        <p>Functional validation and ICT/FT framework for quality confidence.</p>
+                    </article>
+                    <article class="career-box">
+                        <h3>Motion x Aerospace</h3>
+                        <p>High-precision stage configuration with controlled environments.</p>
+                    </article>
+                    <article class="career-box">
+                        <h3>Storage x Energy</h3>
+                        <p>High-density and selective systems adapted to part profile and flow.</p>
+                    </article>
+                    <article class="career-box">
+                        <h3>Support x Multi-Industry</h3>
+                        <p>Design review, implementation and optimization across project lifecycle.</p>
+                    </article>
+                </div>
+            </section>
         </div>
     </main>
 
