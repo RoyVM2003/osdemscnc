@@ -1,4 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile: handle COMPANY submenu before page-specific handlers
+  document.addEventListener(
+    'click',
+    event => {
+      const companyLink = event.target.closest('.has-dropdown > a[data-page="company"]');
+      if (!companyLink || window.innerWidth > 768) return;
+
+      // Prevent existing page scripts from closing the whole menu
+      event.preventDefault();
+      event.stopPropagation();
+
+      const parent = companyLink.closest('.has-dropdown');
+      parent?.classList.toggle('active');
+    },
+    true
+  );
+
   // Progressive image loading defaults
   document.querySelectorAll('img').forEach(img => {
     if (!img.getAttribute('loading')) img.setAttribute('loading', 'lazy');
